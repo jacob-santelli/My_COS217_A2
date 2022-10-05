@@ -93,6 +93,8 @@ Is it possible for Str_copy or Str_concat to call assert to verify
 that the destination memory area specified by the caller is large
 enough? Explain.
 
-
+Yes, you can get the size of both by using sizeof, and dividing by the 
+sizeof of one of the elements. Then, you could assert that the size of the
+target area is the same size or smaller than the string being copied
 
 ------------------------------------------------------------------------
