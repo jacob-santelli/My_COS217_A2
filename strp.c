@@ -1,3 +1,5 @@
+/* Module defining a number of String functions with pointer notation */
+
 #include "str.h"
 #include <stdio.h>
 #include <assert.h>
@@ -76,9 +78,11 @@ int Str_compare(const char *pcS1, const char *pcS2)
 
 char *Str_search(const char *pcHaystack, const char *pcNeedle) 
 {
+   /* intialize variables and assert that parameters are not NULL */
    char * firstChar;
    char * tempHaystack;
    char * tempNeedle;
+   int mismatch = 0;
    
    assert(pcHaystack != NULL);
    assert(pcNeedle != NULL);
@@ -87,22 +91,25 @@ char *Str_search(const char *pcHaystack, const char *pcNeedle)
    tempNeedle = (char*) pcNeedle;
    tempHaystack = (char*) pcHaystack;
 
+   /* corner case if first character null */
    if (pcNeedle[0] == '\0') {
       return firstChar;
    }
 
+   /* iterate through the haystack, checking for matches to needle */
    while (*pcHaystack != '\0') {
       if (*pcHaystack == pcNeedle[0]) {
          while(*tempNeedle != '\0') {
             if (*tempHaystack != *tempNeedle) {
-               goto mismatch;
+               mismatch = 1;
+               break;
             }
             tempNeedle++;
             tempHaystack++;
          }
-         return firstChar;
+         if (mismatch == 0) return firstChar;
       }
-      mismatch:
+      mismatch = 0;
       tempNeedle = (char*) pcNeedle;
       firstChar++;
       pcHaystack++;

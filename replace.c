@@ -1,10 +1,9 @@
 /*--------------------------------------------------------------------*/
 /* replace.c                                                          */
-/* Author: ???                                                        */
+/* Author: Jacob Santelli                                             */
 /*--------------------------------------------------------------------*/
 
 #include "str.h"
-#include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -20,7 +19,45 @@
 static size_t replaceAndWrite(const char *pcLine,
                               const char *pcFrom, const char *pcTo)
 {
-   /* Insert your code here. */
+   /* intialize variables and assert that parameters are not NULL */
+   size_t replacements = 0;
+   char * temp;
+   size_t fromLen;
+   size_t j;
+
+   assert(pcLine != NULL);
+   assert(pcFrom != NULL);
+   assert(pcTo != NULL);
+
+
+   fromLen = Str_getLength(pcFrom);
+   if (fromLen == 0) puts(pcLine);
+
+   /* iterate through String pcLine, identifying and replacing instances
+   of pcFrom with pcTo, and printing all other characters */
+   while (*pcLine != '\0') {
+      temp = Str_search(pcLine, pcFrom);
+      if (temp == NULL) {
+         while (*pcLine != '\0') {
+            putchar(*pcLine);
+            pcLine++;
+         }
+         break;
+      }
+      while (pcLine != temp) {
+         putchar(*pcLine);
+         pcLine++;
+      }
+      printf(pcTo);
+      j = 0;
+      while (j != fromLen) {
+         pcLine++;
+         j++;
+      }
+      replacements++;
+      fromLen = Str_getLength(pcFrom);
+   }
+   return replacements;
 }
 
 /*--------------------------------------------------------------------*/
@@ -55,8 +92,9 @@ int main(int argc, char *argv[])
    pcFrom = argv[1];
    pcTo = argv[2];
 
-   while (fgets(acLine, MAX_LINE_SIZE, stdin) != NULL)
-      /* Insert your code here. */
+   while (fgets(acLine, MAX_LINE_SIZE, stdin) != NULL) {
+      uReplaceCount += replaceAndWrite(acLine, pcFrom, pcTo);
+   }
 
    fprintf(stderr, "%lu replacements\n", (unsigned long)uReplaceCount);
    return 0;

@@ -1,3 +1,5 @@
+/* Module defining a number of String functions with Array notation */
+
 #include "str.h"
 #include <stdio.h>
 #include <assert.h>
@@ -72,27 +74,33 @@ int Str_compare(const char pcS1[], const char pcS2[])
 
 char *Str_search(const char pcHaystack[], const char pcNeedle[]) 
 {
+   /* intialize variables and assert that parameters are not NULL */
    size_t haystackLength = 0;
    size_t needleLength = 0;
+   int mismatch = 0;
    char* firstChar;
 
    assert(pcHaystack != NULL);
    assert(pcNeedle != NULL);
 
    firstChar = (char*) pcHaystack;
+
+   /* corner case if first character null */
    if (pcNeedle[0] == '\0') return firstChar;
 
+   /* iterate through the haystack, checking for matches to needle */
    while (pcHaystack[haystackLength] != '\0') {
       if (pcHaystack[haystackLength] == pcNeedle[0]) {
          while(pcNeedle[needleLength] != '\0') {
             if (pcHaystack[haystackLength + needleLength] != pcNeedle[needleLength]) {
-               goto mismatch;
+               mismatch = 1;
+               break;
             }
             needleLength++;
          }
-         return firstChar;
+         if (mismatch == 0) return firstChar;
       }
-      mismatch:
+      mismatch = 0;
       needleLength = 0;
       firstChar++;
       haystackLength++;
