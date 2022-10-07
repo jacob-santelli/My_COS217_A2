@@ -105,11 +105,11 @@ Is it possible for Str_copy or Str_concat to call assert to verify
 that the destination memory area specified by the caller is large
 enough? Explain.
 
-Yes, you can get the size of the whole memory area using sizeof, and 
-then strlen or String_getLength can be used to get the length of the 
-String being copied/concatenated with (the length of which can then 
-be multiplied by the size of the chars to determine the number of 
-bytes needed in the target area). The length of the String that is being
-concatenated onto in Str_concat can be similarly determined.
+No, it is not possible. The parameters of both are simply pointers,
+so sizeof would just return the size of the pointer itself, not the 
+size of the memory area. Using strlen would run the risk of terminating
+early, if a null character were in the middle of the memory area. Thus,
+it is not possible to call assert to verify that the size of the memory 
+area is large enough.
 
 ------------------------------------------------------------------------
